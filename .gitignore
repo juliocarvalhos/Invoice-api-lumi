@@ -1,0 +1,33 @@
+# compiled output
+/dist
+/node_modules
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# Tests
+/coverage
+
+# Prisma
+prisma/migrations
+
+# IDE
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+/generated/prisma
