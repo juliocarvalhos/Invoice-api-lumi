@@ -1,6 +1,8 @@
 import {
   Controller,
   Post,
+  Get,
+  Query,
   UploadedFile,
   UseInterceptors,
   BadRequestException,
@@ -12,9 +14,11 @@ import {
   ApiResponse,
   ApiConsumes,
   ApiBody,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { InvoicesService } from './invoices.service';
 import { InvoiceResponseDto } from './dto/invoice-response.dto';
+import { FilterInvoicesDto } from './dto/filter-invoices.dto';
 
 const multerOptions = {
   fileFilter: (
@@ -64,5 +68,14 @@ export class InvoicesController {
       throw new BadRequestException('Nenhum arquivo enviado');
     }
     return this.invoicesService.processAndSave(file.buffer);
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Lista faturas processadas com filtros opcionais' })
+  @ApiQuery({ name: 'numero_cliente', required: false, example: '7204076116' })
+  @ApiQuery({ name: 'mes_referencia', required: false, example: 'JAN/2024' })
+  @ApiResponse({ status: 200, description: 'Lista de faturas', type: [InvoiceResponseDto] })
+  findAll(@Query() filters: FilterInvoicesDto): Promise<InvoiceResponseDto[]> {
+    return this.invoicesService.findAll(filters);
   }
 }

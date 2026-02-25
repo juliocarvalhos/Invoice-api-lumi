@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
@@ -12,6 +13,8 @@ async function bootstrap() {
     .addTag('invoices', 'Operações com faturas')
     .addTag('health', 'Status da aplicação')
     .build();
+
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
