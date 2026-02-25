@@ -11,36 +11,28 @@ datasource db {
 }
 
 model Invoice {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                          String   @id @default(uuid())
+  numero_cliente              String
+  mes_referencia              String   // Ex: "SET/2024"
 
-  // Dados extraídos do LLM
-  clientNumber    String
-  referenceMonth  String // Ex: "SET/2024"
+  // Dados brutos extraídos pelo LLM
+  energia_eletrica_kwh        Float
+  energia_eletrica_valor      Float
+  energia_sceee_kwh           Float
+  energia_sceee_valor         Float
+  energia_compensada_kwh      Float
+  energia_compensada_valor    Float
+  contrib_ilum_publica        Float
 
-  // Energia Elétrica
-  energiaEletricaQtd   Float
-  energiaEletricaValor Float
+  // Variáveis calculadas pelo sistema
+  consumo_energia_kwh         Float    // energia_eletrica_kwh + energia_sceee_kwh
+  energia_compensada_total_kwh Float   // = energia_compensada_kwh
+  valor_total_sem_gd          Float    // energia_eletrica_valor + energia_sceee_valor + contrib_ilum_publica
+  economia_gd                 Float    // = energia_compensada_valor (positivo)
 
-  // Energia SCEE s/ICMS
-  energiaSceeeQtd   Float
-  energiaSceeeValor Float
+  created_at                  DateTime @default(now())
 
-  // Energia Compensada GD I
-  energiaCompensadaQtd   Float
-  energiaCompensadaValor Float
-
-  // Contrib Ilum Pública Municipal
-  contribIlumPublicaValor Float
-
-  // Variáveis calculadas
-  consumoEnergiaEletricaKwh Float // energiaEletricaQtd + energiaSceeeQtd
-  energiaCompensadaKwh      Float // energiaCompensadaQtd
-  valorTotalSemGd           Float // energiaEletricaValor + energiaSceeeValor + contribIlumPublicaValor
-  economiaGd                Float // energiaCompensadaValor (positivo)
-
-  @@unique([clientNumber, referenceMonth])
-  @@index([clientNumber])
-  @@index([referenceMonth])
+  @@index([numero_cliente])
+  @@index([mes_referencia])
+  @@index([numero_cliente, mes_referencia])
 }
