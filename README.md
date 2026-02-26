@@ -159,6 +159,17 @@ Resposta `200 OK`:
 ]
 ```
 
+## Faturas de exemplo
+
+A pasta [`Faturas-exemplo/`](Faturas-exemplo/) contém PDFs de faturas para testar o upload (duas instalações, de janeiro a setembro de 2024):
+
+```bash
+curl -X POST http://localhost:3000/invoices/upload \
+  -F "file=@Faturas-exemplo/Instalação_ 3001116735/3001116735-01-2024.pdf"
+```
+
+> **Atenção:** todas as faturas de exemplo são **fictícias** e servem apenas para teste e demonstração. Nomes, endereços, números de cliente e de instalação, consumos e valores não correspondem a pessoas, imóveis ou contas reais. O mesmo vale para os dados mostrados nas respostas de exemplo deste README.
+
 ## Variáveis calculadas
 
 | Variável | Fórmula |
